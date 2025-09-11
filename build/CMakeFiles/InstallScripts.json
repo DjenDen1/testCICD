@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/LG/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

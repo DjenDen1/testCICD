@@ -1,0 +1,14 @@
+[
+{
+  "directory": "C:/LG/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -g -std=gnu++11 -o CMakeFiles\\laboratory1.dir\\main.cpp.obj -c C:\\LG\\main.cpp",
+  "file": "C:/LG/main.cpp",
+  "output": "C:/LG/build/CMakeFiles/laboratory1.dir/main.cpp.obj"
+},
+{
+  "directory": "C:/LG/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -g -std=gnu++11 -o CMakeFiles\\laboratory1.dir\\version.cpp.obj -c C:\\LG\\version.cpp",
+  "file": "C:/LG/version.cpp",
+  "output": "C:/LG/build/CMakeFiles/laboratory1.dir/version.cpp.obj"
+}
+]

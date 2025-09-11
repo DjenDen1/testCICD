@@ -1,0 +1,3 @@
+C:/LG/build/CMakeFiles/laboratory1.dir
+C:/LG/build/CMakeFiles/edit_cache.dir
+C:/LG/build/CMakeFiles/rebuild_cache.dir

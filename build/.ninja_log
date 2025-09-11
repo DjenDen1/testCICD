@@ -1,0 +1,6 @@
+# ninja log v7
+5	239	7788830186705201	CMakeFiles/laboratory1.dir/main.cpp.obj	64c61397b58ff277
+239	358	7788830189050898	auto_version_app.exe	53ae0ef8f9e24fad
+19	65	7793368956224052	CMakeFiles/laboratory1.dir/version.cpp.obj	c2ee3f2c0ffd9215
+16	211	7793368956184049	CMakeFiles/laboratory1.dir/main.cpp.obj	64c61397b58ff277
+211	292	7793368958108243	auto_version_app.exe	94d62fb6e10b0fa0

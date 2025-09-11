@@ -1,0 +1,71 @@
+name: Auto Version CI with Testing
+
+on: [push]
+
+permissions:
+  contents: write   # даём право пушить изменения в репозиторий
+
+jobs:
+  auto-version:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4  # Обновлено до версии 4
+    
+    - name: Update version
+      run: |
+        # Читаем текущую версию из файла
+        CURRENT_VERSION=$(grep 'VERSION' version.cpp | cut -d'"' -f2)
+        echo "Current version: $CURRENT_VERSION"
+        
+        # Увеличиваем последнюю цифру версии
+        MAJOR=$(echo $CURRENT_VERSION | cut -d. -f1)
+        MINOR=$(echo $CURRENT_VERSION | cut -d. -f2)
+        PATCH=$(echo $CURRENT_VERSION | cut -d. -f3)
+        
+        NEW_PATCH=$((PATCH + 1))
+        NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+        
+        # Обновляем версию в version.h
+        sed -i "s/const char\* VERSION = \".*\"/const char* VERSION = \"$NEW_VERSION\"/" version.cpp
+        echo "Updated version to: $NEW_VERSION"
+        
+        # Сохраняем новую версию в environment variable для использования в других job
+        echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+    
+    - name: Commit new version
+      run: |
+        git config user.email "github-actions@github.com"
+        git config user.name "GitHub Actions"
+        git add version.h
+        git commit -m "CI: Auto-update version to $NEW_VERSION"
+        git push
+
+  run-tests:
+    needs: auto-version  # Зависит от завершения auto-version
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]  # Матрица ОС
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up environment
+      run: |
+        # Здесь настройка окружения для тестов
+        echo "Setting up test environment on ${{ matrix.os }}"
+    
+    - name: Run tests
+      run: |
+        # Команды для запуска тестов
+        echo "Running tests on ${{ matrix.os }}"
+        # Пример: g++ -o myprogram main.cpp && ./myprogram --test
+   
+        
+    - name: Report results
+      if: always()  # Выполняется всегда, даже если тесты провалились
+      run: |
+        echo "Test results for ${{ matrix.os }}"
