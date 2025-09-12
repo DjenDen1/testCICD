@@ -1,0 +1,14 @@
+[
+{
+  "directory": "C:/testCICD/build",
+  "command": "C:\\msys64\\mingw64\\bin\\clang++.exe   -g -std=gnu++11 -o CMakeFiles\\laboratory1.dir\\main.cpp.obj -c C:\\testCICD\\main.cpp",
+  "file": "C:/testCICD/main.cpp",
+  "output": "CMakeFiles/laboratory1.dir/main.cpp.obj"
+},
+{
+  "directory": "C:/testCICD/build",
+  "command": "C:\\msys64\\mingw64\\bin\\clang++.exe   -g -std=gnu++11 -o CMakeFiles\\laboratory1.dir\\version.cpp.obj -c C:\\testCICD\\version.cpp",
+  "file": "C:/testCICD/version.cpp",
+  "output": "CMakeFiles/laboratory1.dir/version.cpp.obj"
+}
+]

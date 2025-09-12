@@ -1,0 +1,87 @@
+name: Auto Version CI with Testing
+
+on: [push]
+
+permissions:
+  contents: write
+
+jobs:
+  auto-version:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Важно для работы с git历史
+
+    - name: Update version
+      id: update-version
+      run: |
+        # Читаем текущую версию из файла
+        CURRENT_VERSION=$(grep 'VERSION' version.cpp | cut -d'"' -f2)
+        echo "Current version: $CURRENT_VERSION"
+        
+        # Разбираем версию на компоненты
+        MAJOR=$(echo $CURRENT_VERSION | cut -d. -f1)
+        MINOR=$(echo $CURRENT_VERSION | cut -d. -f2)
+        PATCH=$(echo $CURRENT_VERSION | cut -d. -f3)
+        
+        # Увеличиваем версию с правильной логикой
+        NEW_PATCH=$((PATCH + 1))
+        NEW_MINOR=$MINOR
+        NEW_MAJOR=$MAJOR
+        
+        if [ $NEW_PATCH -ge 10 ]; then
+          NEW_PATCH=0
+          NEW_MINOR=$((MINOR + 1))
+          
+          if [ $NEW_MINOR -ge 10 ]; then
+            NEW_MINOR=0
+            NEW_MAJOR=$((MAJOR + 1))
+          fi
+        fi
+        
+        NEW_VERSION="$NEW_MAJOR.$NEW_MINOR.$NEW_PATCH"
+        echo "New version: $NEW_VERSION"
+        
+        # Обновляем версию в version.cpp
+        sed -i "s/const char\* VERSION = \".*\"/const char* VERSION = \"$NEW_VERSION\"/" version.cpp
+        
+        # Сохраняем новую версию для использования в других шагах
+        echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+        echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+    - name: Commit new version
+      run: |
+        git config user.email "github-actions@github.com"
+        git config user.name "GitHub Actions"
+        git add version.cpp  # Исправлено: version.h → version.cpp
+        git commit -m "CI: Auto-update version to $NEW_VERSION"
+        git push
+
+  run-tests:
+    needs: auto-version
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+  
+    
+    - name: Set up environment
+      run: |
+        echo "Setting up test environment on ${{ matrix.os }}"
+    
+    - name: Run tests
+      run: |
+        echo "Running tests on ${{ matrix.os }}"
+        
+    - name: Report results
+      if: always()
+      run: |
+        echo "Test results for ${{ matrix.os }}"

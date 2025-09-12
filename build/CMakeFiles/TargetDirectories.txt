@@ -1,0 +1,3 @@
+C:/testCICD/build/CMakeFiles/laboratory1.dir
+C:/testCICD/build/CMakeFiles/edit_cache.dir
+C:/testCICD/build/CMakeFiles/rebuild_cache.dir

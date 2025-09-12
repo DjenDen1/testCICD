@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/testCICD/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
